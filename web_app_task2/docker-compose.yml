@@ -1,35 +1,17 @@
 version: "3.3"
 
 services:
-  app: &python
+  backend:
     restart: unless-stopped
     volumes:
       - ./:/app
-    env_file:
-      - .env
-    build: .
     ports:
       - "8087:8000"
-    command: gunicorn --bind 0.0.0.0:8081 core.wsgi
+    command: gunicorn --bind 0.0.0.0:8000 store.wsgi
     logging:
       options:
         max-size: "10m"
         max-file: "3"
-
-  redis:
-      image: redis:6-alpine
-      restart: unless-stopped
-      volumes:
-        - ./.docker/redis-data:/data
-      logging:
-        options:
-          max-size: "10m"
-          max-file: "3"
-  worker:
-      <<: *python
-      ports: []
-      volumes: []
-      command: celery -A core.celery_app worker -l info -c 1
 
 volumes:
   media:
