@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container mt-5">
+     {% block content %}
+
+     {% endblock %}
+     <h2>Contact Us</h2>
+     <form method="post">
+          {% csrf_token %}
+          {{ form.non_field_errors }}
+          <div class="form-group">
+               <label for="{{ form.name.id }}" style="color: black;">Name</label>
+               {{ form.name }}
+          </div>
+          <div class="form-group">
+
+               <label for="{{ form.email.id }}" style="color: black;">Email</label>
+               {{ form.email }}
+          </div>
+          <div class="form-group">
+
+               <label for="{{ form.subject.id }}" style="color: black;">Subject</label>
+               {{ form.subject }}
+          </div>
+          <div class="form-group">
+
+               <label for="{{ form.message.id }}" style="color: black;">Message</label>
+               {{ form.message }}
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+     </form>
+</div>
+{% endblock %}

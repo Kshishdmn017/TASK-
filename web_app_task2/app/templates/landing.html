@@ -1,0 +1,60 @@
+{% extends 'base.html' %} {% block body %}
+<div class="navbar-fixed">
+    <nav class="z-depth-2">
+        <div class="nav-wrapper grey darken-3">
+            <span class="brand-logo" style="margin-left: 12px">Buy-a-Ride</span>
+            <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+{% if user.is_authenticated %}
+     <li><p>Welcome, {{ user.username }}!</p></li>
+    <li><a href="{% url 'post-vehicle' %} ">Post a ride</a></li>
+    <li><a href="{% url 'contact_us' %} ">Contact Us</a></li>
+<li><a href="{% url 'logout' %}">Logout</a></li>
+{% else %}
+    <li><a href="{% url 'login' %}">Login</a></li>
+    <li><a href="{% url 'register' %}">Register</a></li>
+
+{% endif %}
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<ul class="sidenav" id="mobile-nav">
+{% if user.is_authenticated %}
+     <p>Welcome, {{ user.username }}!</p>
+    <li><a href="{% url 'post-vehicle' %} ">Post a ride</a></li>
+<li><a href="{% url 'logout' %}">Logout</a></li>
+{% else %}
+    <li><a href="{% url 'login' %}">Login</a></li>
+    <li><a href="{% url 'register' %}">Register</a></li>
+{% endif %}
+</ul>
+<div class="container">
+    <div class="card">
+        <div class="card-title">
+            <h1 class="black-text lighten-1 text-center">Avaliable Cars</h1>
+            <p class="text-center">*click car image to see details</p>
+            <div class="text-center">
+                <form action="{% url 'post-vehicle' %} ">
+                    <button class="btn waves-effect waves-light blue darken-3" type="submit"><i class="fas fa-plus"></i>
+                        Post a ride</button>
+                </form>
+            </div>
+        </div>
+        <div class="card-content">
+
+            <div class="carContainer">
+                <div class="center-align">
+                    {% for car in car_post %}
+
+                    <a href="{% url 'car-page' car.id %}">
+                        <img class="carImg car-detail" src="{{ car.car_img }}" alt="No Image" />
+                    </a>
+
+                    {% endfor %} {% endblock body %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

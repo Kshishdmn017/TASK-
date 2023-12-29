@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+     <div class="row justify-content-center">
+          <div class="col-md-6">
+               <div class="card">
+                    <div class="card-header">Register</div>
+                    <div class="card-body">
+                         <form method="post">
+                              {% csrf_token %}
+
+                              <label for="{{ form.username.id }}" style="color: black;">Username</label>
+                              {{ form.username }}
+
+                              <label for="{{ form.password1.id }}" style="color: black;">Password</label>
+                              {{ form.password1 }}
+
+                              <label for="{{ form.password2.id }}" style="color: black;">Password Confirm</label>
+                              {{ form.password2 }}
+                              <button type="submit" class="btn btn-primary">Register</button>
+                         </form>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>
+{% endblock %}
