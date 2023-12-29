@@ -1,0 +1,154 @@
+#!/bin/bash
+
+# Function to display CPU information
+function get_cpu_info() {
+    lscpu
+}
+
+function get_all_file_info() {
+    echo "Size: $(get_size "$1")"
+    echo "Permissions: $(get_permissions "$1")"
+    echo "Owner: $(get_owner "$1")"
+    echo "Last Modified: $(get_last_modified "$1")"
+}
+# Function to display Memory information
+function get_memory_info() {
+    free -h
+}
+# Function to display file size
+function get_size() {
+    stat -c %s "$1"
+}
+
+# Function to display file permissions
+function get_permissions() {
+    stat -c %A "$1"
+}
+
+# Function to display file owner
+function get_owner() {
+    stat -c %U "$1"
+}
+
+function create_user() {
+    sudo adduser "$1"
+}
+
+# Function to list all regular users
+function list_users() {
+    awk -F':' '{ if ($3 >= 1000 && $3 != 65534) print $1 }' /etc/passwd
+}
+
+# Function to list users with sudo permissions
+function list_sudo_users() {
+    awk -F':' '/sudo/{print $4}' /etc/group | tr ',' '\n'
+}
+# Function to display last modified time
+function get_last_modified() {
+    stat -c %y "$1"
+}
+
+# Function to display help
+function display_help() {
+    echo "Usage: $0 [options] <file-name>"
+    echo "Options:"
+    echo "  --size, -s           Display the size of the file."
+    echo "  --permissions, -p    Display the file permissions."
+    echo "  --owner, -o          Display the owner of the file."
+    echo "  --last-modified, -m  Display the last modified time of the file."
+    echo "  --help               Display this help message."
+}
+
+# Check if at least one argument is provided
+if [ $# -lt 1 ]; then
+    display_help
+    exit 1
+fi
+
+# Process options
+while [ $# -gt 0 ]; do
+    case "$1" in
+        user)
+            case "$2" in
+                create)
+                    if [ -n "$3" ]; then
+                        create_user "$3"
+                        shift 3  # Shift three times for 'user', 'create', and '<username>'
+                    else
+                        echo "Usage: internsctl user create <username>"
+                        shift 2  # Shift twice for 'user', 'create'
+                    fi
+                    ;;
+                list)
+                    if [ "$3" = "--sudo-only" ]; then
+                        list_sudo_users
+                        shift 3  # Shift three times for 'user', 'list', '--sudo-only'
+                    else
+                        list_users
+                        shift 2  # Shift twice for 'user', 'list'
+                    fi
+                    ;;
+                *)
+                    echo "Invalid command. Usage: internsctl user [create/list]"
+                    shift 2  # Shift twice for 'user' and the invalid command
+                    ;;
+            esac
+            ;;
+        cpu)
+            if [ "$2" = "getinfo" ]; then
+                get_cpu_info
+                shift 2  # Shift twice for 'cpu', 'getinfo'
+            else
+                echo "Usage: internsctl cpu getinfo"
+                shift 2  # Shift twice for 'cpu' and possibly incorrect command
+            fi
+            ;;
+        memory)
+            if [ "$2" = "getinfo" ]; then
+                get_memory_info
+                shift 2  # Shift twice for 'memory', 'getinfo'
+            else
+                echo "Usage: internsctl memory getinfo"
+                shift 2  # Shift twice for 'memory' and possibly incorrect command
+            fi
+            ;;
+        file)
+            case "$2" in
+                getinfo)
+                    case "$3" in
+                        --size|-s)
+                            get_size "$4"
+                            shift 4
+                            ;;
+                        --permissions|-p)
+                            get_permissions "$4"
+                            shift 4
+                            ;;
+                        --owner|-o)
+                            get_owner "$4"
+                            shift 4
+                            ;;
+                        --last-modified|-m)
+                            get_last_modified "$4"
+                            shift 4
+                            ;;
+                        *)
+                            get_all_file_info "$3"
+                            shift 3
+                            ;;                    esac
+                    ;;
+                *)
+                    echo "Invalid command for file: $2"
+                    echo "Use --help to display usage information."
+                    exit 1
+                    ;;
+            esac
+            ;;        *)
+            # If the option is not recognized
+            echo "Invalid option: $1"
+            echo "Use --help to display usage information."
+            exit 1
+            ;;
+    esac
+done
+

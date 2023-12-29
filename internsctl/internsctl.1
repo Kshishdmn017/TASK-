@@ -1,0 +1,67 @@
+.TH INTERNSCTL 1 "December 2023" "v0.1.0" "Internsctl User Manual"
+.SH NAME
+internsctl \- utility for managing system resources and user accounts
+
+.SH SYNOPSIS
+.B internsctl
+[command] [subcommand] [options] [arguments]
+
+.SH DESCRIPTION
+\fBinternsctl\fR is a script for managing system resources including CPU, memory, and user accounts. It also allows querying file information.
+
+.SH COMMANDS
+.SS "User Management"
+.TP
+.B user create <username>
+Create a new system user.
+.TP
+.B user list [--sudo-only]
+List all regular users or only users with sudo privileges.
+
+.SS "System Information"
+.TP
+.B cpu getinfo
+Display CPU information.
+.TP
+.B memory getinfo
+Display memory information.
+
+.SS "File Information"
+.TP
+.B file getinfo --size|-s <file>
+Display file size.
+.TP
+.B file getinfo --permissions|-p <file>
+Display file permissions.
+.TP
+.B file getinfo --owner|-o <file>
+Display file owner.
+.TP
+.B file getinfo --last-modified|-m <file>
+Display last modified time of the file.
+.TP
+.B file getinfo <file>
+Display all available information about the file.
+
+.SH OPTIONS
+.TP
+.B --help
+Display help information.
+
+.SH EXAMPLES
+.TP
+.B internsctl user create john
+Create a new user named 'john'.
+.TP
+.B internsctl memory getinfo
+Display memory information.
+.TP
+.B internsctl file getinfo --owner myfile.txt
+Display the owner of 'myfile.txt'.
+
+.SH AUTHOR
+Written by [Kashish Dhiman].
+
+.SH "SEE ALSO"
+.B adduser(8), lscpu(1), free(1), stat(1)
+
