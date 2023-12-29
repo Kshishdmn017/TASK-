@@ -43,10 +43,11 @@ The `internsctl` script can be used with the following commands:
   ```
 
 - **File Information**:
-  - Size: `internsctl --size <file>`
-  - Permissions: `internsctl --permissions <file>`
-  - Owner: `internsctl --owner <file>`
-  - Last Modified: `internsctl --last-modified <file>`
+  - All Information: `internsctl file getinfo <file>`
+  - Size: `internsctl file getinfo --size <file>`
+  - Permissions: `internsctl file getinfo --permissions <file>`
+  - Owner: `internsctl file getinfo --owner <file>`
+  - Last Modified: `internsctl file getinfo --last-modified <file>`
 
 - **User Management**:
   - Create User: `internsctl user create <username>`
@@ -64,10 +65,6 @@ man internsctl
 ## Contributing
 
 Contributions to internsctl are welcome! Please fork the repository, make your changes, and submit a pull request.
-
-## License
-
-[Specify the License here, if applicable]
 
 ## Authors
 
