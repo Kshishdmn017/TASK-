@@ -71,7 +71,7 @@ Contributions to internsctl are welcome! Please fork the repository, make your c
 
 ## Authors
 
-- [Your Name]
+- [Kashish Koushal]
 
 ## Acknowledgments
 
